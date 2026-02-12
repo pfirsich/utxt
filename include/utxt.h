@@ -99,7 +99,7 @@ typedef struct utxt_font utxt_font;
 typedef struct {
     float size; // The target vertical extent in pixels (ascent - descent)
     uint32_t atlas_size; // must be power-of-two
-    size_t font_index;
+    uint32_t font_index;
     uint32_t oversampling_h; // default: 2
     uint32_t oversampling_v; // default: 2
     // Default range is Basic Latin (0x20-0x7F) and Latin-1 Supplement (0xA0-0xFF)
@@ -163,7 +163,7 @@ size_t utxt_draw_text(
 
 typedef struct utxt_layout utxt_layout;
 
-utxt_layout* utxt_layout_create(utxt_alloc alloc, size_t num_glyphs);
+utxt_layout* utxt_layout_create(utxt_alloc alloc, uint32_t num_glyphs);
 void utxt_layout_free(utxt_layout* layout);
 
 typedef enum {

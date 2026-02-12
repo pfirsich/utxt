@@ -152,7 +152,7 @@ EXPORT utxt_font* utxt_font_load_ttf_buffer(
         last_error = "No fonts in file";
         return nullptr;
     }
-    if (params.font_index >= (size_t)num_fonts) {
+    if (params.font_index >= (uint32_t)num_fonts) {
         last_error = "Font index out of range";
         return nullptr;
     }
@@ -606,7 +606,7 @@ struct Layout {
     float current_line_height = 0.0f;
 };
 
-EXPORT utxt_layout* utxt_layout_create(utxt_alloc alloc, size_t num_glyphs)
+EXPORT utxt_layout* utxt_layout_create(utxt_alloc alloc, uint32_t num_glyphs)
 {
     if (!alloc.realloc) {
         alloc = { realloc, nullptr };
