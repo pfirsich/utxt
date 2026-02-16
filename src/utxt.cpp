@@ -576,8 +576,8 @@ EXPORT size_t utxt_draw_text(
             cursor_x += utxt_get_kerning(font, prev_glyph_idx, glyph->glyph_index);
         }
 
-        if (quad_idx > num_quads) {
-            break;
+        if (quad_idx >= num_quads) {
+            return num_quads + 1;
         }
 
         const auto x = cursor_x + glyph->bearing_x;
