@@ -724,10 +724,11 @@ static bool flush_chunk(
     return true;
 }
 
-EXPORT size_t utxt_layout_add_text(utxt_layout* layout_, const utxt_style* style, utxt_string text)
+EXPORT size_t utxt_layout_add_text(
+    utxt_layout* layout_, const utxt_font* font_, uintptr_t user_data, utxt_string text)
 {
     auto& layout = *(Layout*)layout_;
-    auto& font = *(Font*)style->font;
+    auto& font = *(Font*)font_;
 
     const auto space_glyph = find_glyph(font, ' ');
     assert(space_glyph);
@@ -776,11 +777,11 @@ EXPORT size_t utxt_layout_add_text(utxt_layout* layout_, const utxt_style* style
         assert(chunk_idx < chunk.size());
 
         if (prev_glyph_idx) {
-            chunk_cursor_x += utxt_get_kerning(style->font, prev_glyph_idx, glyph->glyph_index);
+            chunk_cursor_x += utxt_get_kerning(font_, prev_glyph_idx, glyph->glyph_index);
         }
         prev_glyph_idx = glyph->glyph_index;
 
-        chunk[chunk_idx++] = { style, glyph, chunk_cursor_x + glyph->bearing_x, glyph->bearing_y };
+        chunk[chunk_idx++] = { glyph, user_data, chunk_cursor_x + glyph->bearing_x, glyph->bearing_y };
 
         chunk_cursor_x += glyph->advance;
     }

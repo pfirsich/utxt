@@ -22,10 +22,9 @@ int main()
 
     // Layout the text
     utxt_layout* layout = utxt_layout_create({}, 256);
-    const utxt_style style = { .font = font };
     utxt_layout_reset(layout, textbuf_width, UTXT_TEXT_ALIGN_LEFT);
-    utxt_layout_add_text(layout, &style, UTXT_LITERAL("Hey, look at this cool text, that"));
-    utxt_layout_add_text(layout, &style, UTXT_LITERAL(" is most likely taking up multiple lines."));
+    utxt_layout_add_text(layout, font, 0, UTXT_LITERAL("Hey, look at this cool text, that"));
+    utxt_layout_add_text(layout, font, 0, UTXT_LITERAL(" is most likely taking up multiple lines."));
     utxt_layout_compute(layout);
 
     // Loop layout glyphs, get the quad and render them
