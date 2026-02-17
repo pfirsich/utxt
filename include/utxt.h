@@ -197,6 +197,8 @@ typedef struct {
 } utxt_layout_glyph;
 
 // The returned pointer is valid until the next add_*, compute, reset or free.
+// You get to modify these before turning them into quads, so you can apply text effects that
+// displace glyphs (like wave or shake).
 utxt_layout_glyph* utxt_layout_get_glyphs(utxt_layout* layout, size_t* count);
 
 void utxt_layout_glyph_get_quad(utxt_quad* quad, const utxt_layout_glyph* glyph, float x, float y);
