@@ -38,7 +38,7 @@ int main()
     uint8_t textbuf[textbuf_width * textbuf_height] = {};
     for (size_t i = 0; i < num_glyphs; ++i) {
         utxt_quad q;
-        utxt_layout_glyph_get_quad(&q, &glyphs[i], 0.0f, y_offset);
+        utxt_layout_glyph_get_quads(&glyphs[i], 1, &q, 0.0f, y_offset);
 
         const auto textbuf_x = (uint32_t)std::roundf(q.x);
         const auto textbuf_y = (uint32_t)std::roundf(q.y);

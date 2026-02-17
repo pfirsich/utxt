@@ -793,10 +793,13 @@ EXPORT utxt_layout_glyph* utxt_layout_get_glyphs(utxt_layout* layout_, size_t* c
     return layout.lglyphs;
 }
 
-EXPORT void utxt_layout_glyph_get_quad(
-    utxt_quad* quad, const utxt_layout_glyph* lg, float x, float y)
+EXPORT void utxt_layout_glyph_get_quads(
+    const utxt_layout_glyph* layout_glyphs, size_t num_glyphs, utxt_quad* quads, float x, float y)
 {
-    const auto& fg = *lg->glyph;
-    *quad = { x + lg->x, y + lg->y, fg.width, fg.height, fg.u0, fg.v0, fg.u1, fg.v1 };
+    for (size_t i = 0; i < num_glyphs; ++i) {
+        const auto& lg = layout_glyphs[i];
+        const auto& fg = *lg.glyph;
+        quads[i] = { x + lg.x, y + lg.y, fg.width, fg.height, fg.u0, fg.v0, fg.u1, fg.v1 };
+    }
 }
 }

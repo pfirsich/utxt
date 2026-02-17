@@ -201,7 +201,8 @@ typedef struct {
 // displace glyphs (like wave or shake).
 utxt_layout_glyph* utxt_layout_get_glyphs(utxt_layout* layout, size_t* count);
 
-void utxt_layout_glyph_get_quad(utxt_quad* quad, const utxt_layout_glyph* glyph, float x, float y);
+void utxt_layout_glyph_get_quads(
+    const utxt_layout_glyph* layout_glyphs, size_t num_glyphs, utxt_quad* quads, float x, float y);
 
 #ifdef __cplusplus
 }
