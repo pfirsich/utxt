@@ -158,6 +158,19 @@ typedef struct {
 size_t utxt_draw_text(
     utxt_quad* quads, size_t num_quads, const utxt_font* font, utxt_string text, float x, float y);
 
+typedef struct {
+    utxt_string text; // in: text, out: remaining text
+    float cursor_x; // in/out
+    uint32_t kerning_state; // opaque, initialize to 0
+} utxt_draw_text_state;
+
+// This helps you draw text with a fixed size buffer and keeps state across calls.
+// Also returns number of quads dritten and total number of quads if quads is NULL.
+// I the buffer is full, the remainiung text will be written to state->text.
+// If the whole text could be turned into quads, state->text will be empty.
+size_t utxt_draw_text_batch(utxt_quad* quads, size_t num_quads, const utxt_font* font,
+    utxt_draw_text_state* state, float y);
+
 // Fancy text layouting API for all sorts of stuff (dialogue boxes, embedding symbols in text,
 // embedded markup, etc.).
 // Note that you only have to (and want to) layout the text when it changes, not every frame.

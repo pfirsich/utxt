@@ -551,46 +551,56 @@ static size_t count_quads(const utxt_font* font, utxt_string string)
     return quad_count;
 }
 
-EXPORT size_t utxt_draw_text(
-    utxt_quad* quads, size_t num_quads, const utxt_font* font, utxt_string text, float _x, float _y)
+EXPORT size_t utxt_draw_text_batch(
+    utxt_quad* quads, size_t num_quads, const utxt_font* font, utxt_draw_text_state* state, float y)
 {
     auto& fnt = *(Font*)font;
 
     if (!quads) {
-        return count_quads(font, text);
+        return count_quads(font, state->text);
     }
 
-    float cursor_x = _x;
     size_t quad_idx = 0;
-    uint32_t prev_glyph_idx = 0; // for kerning
+    // state->kerning_state is previous glyph index
 
-    while (text.len) {
-        const auto glyph = decode_glyph(fnt, text);
+    while (state->text.len) {
+        if (quad_idx >= num_quads) {
+            return quad_idx;
+        }
+
+        const auto glyph = decode_glyph(fnt, state->text);
         if (!glyph) {
             // code point invalid or not in font, skip and reset kerning
-            prev_glyph_idx = 0;
+            state->kerning_state = 0;
             continue;
         }
 
-        if (prev_glyph_idx) {
-            cursor_x += utxt_get_kerning(font, prev_glyph_idx, glyph->glyph_index);
+        if (state->kerning_state) {
+            state->cursor_x += utxt_get_kerning(font, state->kerning_state, glyph->glyph_index);
         }
 
-        if (quad_idx >= num_quads) {
-            return num_quads + 1;
-        }
-
-        const auto x = cursor_x + glyph->bearing_x;
-        const auto y = _y + glyph->bearing_y;
+        const auto qx = state->cursor_x + glyph->bearing_x;
+        const auto qy = y + glyph->bearing_y;
 
         quads[quad_idx++]
-            = { x, y, glyph->width, glyph->height, glyph->u0, glyph->v0, glyph->u1, glyph->v1 };
+            = { qx, qy, glyph->width, glyph->height, glyph->u0, glyph->v0, glyph->u1, glyph->v1 };
 
-        cursor_x += glyph->advance;
-        prev_glyph_idx = glyph->glyph_index;
+        state->cursor_x += glyph->advance;
+        state->kerning_state = glyph->glyph_index;
     }
 
     return quad_idx;
+}
+
+EXPORT size_t utxt_draw_text(
+    utxt_quad* quads, size_t num_quads, const utxt_font* font, utxt_string text, float x, float y)
+{
+    utxt_draw_text_state s { text, x, 0 };
+    const auto n = utxt_draw_text_batch(quads, num_quads, font, &s, y);
+    if (quads && s.text.len) {
+        return num_quads + 1;
+    }
+    return n;
 }
 
 struct Layout {
