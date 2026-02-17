@@ -12,7 +12,7 @@ typedef struct {
     size_t len;
 } utxt_string;
 
-#define UTXT_LITERAL(s) ((utxt_string) { s, sizeof(s) - 1 })
+#define UTXT_LITERAL(s) { s, sizeof(s) - 1 }
 utxt_string utxt_zstr(const char* str); // calls strlen for length
 
 utxt_string utxt_get_last_error();
