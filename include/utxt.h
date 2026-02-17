@@ -154,6 +154,7 @@ typedef struct {
 // chracters. Use utxt_layout API for everything else.
 // Returns number of quads. If quads is NULL, returns the number of quads that would have been
 // generated.
+// Returns num_quads + 1 if the buffer is too small.
 size_t utxt_draw_text(
     utxt_quad* quads, size_t num_quads, const utxt_font* font, utxt_string text, float x, float y);
 
