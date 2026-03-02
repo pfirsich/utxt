@@ -130,8 +130,10 @@ static bool is_sorted(std::span<const T> values)
 }
 
 static uint32_t default_code_point_ranges[4] = {
+    // clang-format off
     0x20, 0x7f, // Basic Latin
     0xa0, 0xff, // Latin-1 Supplement
+    // clang-format on
 };
 
 EXPORT utxt_font* utxt_font_load_ttf_buffer(
