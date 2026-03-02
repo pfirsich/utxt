@@ -737,6 +737,7 @@ EXPORT size_t utxt_layout_add_text(
     const auto space_advance = space_glyph->advance;
     layout.current_line_height = std::fmax(layout.current_line_height, font.metrics.line_height);
 
+    const auto lglyph_idx_before = layout.lglyph_idx;
     uint32_t prev_glyph_idx = 0; // for kerning
     std::array<utxt_layout_glyph, 128> chunk;
     size_t chunk_idx = 0;
@@ -790,7 +791,7 @@ EXPORT size_t utxt_layout_add_text(
 
     flush_chunk(layout, font, std::span { chunk }.first(chunk_idx), chunk_cursor_x);
 
-    return layout.lglyph_idx;
+    return layout.lglyph_idx - lglyph_idx_before;
 }
 
 EXPORT void utxt_layout_compute(utxt_layout* layout_)
