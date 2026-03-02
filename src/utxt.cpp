@@ -726,8 +726,7 @@ static bool flush_chunk(
     return true;
 }
 
-EXPORT size_t utxt_layout_add_text(
-    utxt_layout* layout_, const utxt_font* font_, uintptr_t user_data, utxt_string text)
+EXPORT size_t utxt_layout_add_text(utxt_layout* layout_, const utxt_font* font_, utxt_string text)
 {
     auto& layout = *(Layout*)layout_;
     auto& font = *(Font*)font_;
@@ -784,7 +783,7 @@ EXPORT size_t utxt_layout_add_text(
         }
         prev_glyph_idx = glyph->glyph_index;
 
-        chunk[chunk_idx++] = { glyph, user_data, chunk_cursor_x + glyph->bearing_x, glyph->bearing_y };
+        chunk[chunk_idx++] = { glyph, chunk_cursor_x + glyph->bearing_x, glyph->bearing_y };
 
         chunk_cursor_x += glyph->advance;
     }

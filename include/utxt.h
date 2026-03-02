@@ -188,19 +188,18 @@ typedef enum {
 
 void utxt_layout_reset(utxt_layout* layout, float wrap_width, utxt_text_align align);
 // This function will wrap individiual words (i.e. by whitespace).
-// returns number of added glyphs, text is utf8.
 // No kerning will be added for subsequent calls of this function.
-// user_data can be used to reference text effects or color information.
-size_t utxt_layout_add_text(utxt_layout* layout, const utxt_font* font, uintptr_t user_data, utxt_string text);
+// returns number of added glyphs, text is utf8.
+// Use the return value
+size_t utxt_layout_add_text(utxt_layout* layout, const utxt_font* font, utxt_string text);
 // This function will wrap individual glyphs. Use this for e.g. CJK.
-size_t utxt_layout_add_glyphs(utxt_layout* layout, const utxt_font* font, uintptr_t user_data, utxt_string text);
+size_t utxt_layout_add_glyphs(utxt_layout* layout, const utxt_font* font, utxt_string text);
 // Computes the final positions of all added glyphs (e.g. applies text alignment).
 // It should be called after all text has been added and before getting the layout glyphs.
 void utxt_layout_compute(utxt_layout* layout);
 
 typedef struct {
     const utxt_glyph* glyph;
-    uintptr_t user_data;
     float x, y;
 } utxt_layout_glyph;
 
